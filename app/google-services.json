@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "612664366932",
+    "project_id": "itclass1-d4788",
+    "storage_bucket": "itclass1-d4788.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:612664366932:android:88dd9e21d3ddd029a05ac1",
+        "android_client_info": {
+          "package_name": "com.example.midexam"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUwJNIt2GE0SZd_bo08_WfnpCkDHmr62Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
