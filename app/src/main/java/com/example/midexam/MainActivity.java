@@ -2,21 +2,16 @@ package com.example.midexam;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,60 +38,52 @@ public class MainActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String username = txtUsername.getText().toString().trim();
-                String password = txtPassword.getText().toString().trim();
+        btnRegister.setOnClickListener(v -> {
+            String username = txtUsername.getText().toString().trim();
+            String password = txtPassword.getText().toString().trim();
 
-                if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
-                    Toast.makeText(getApplicationContext(), "Input username and password", Toast.LENGTH_SHORT).show();
-                } else {
-                    registerUser(username, password);
-                }
+            if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
+                Toast.makeText(getApplicationContext(), "Input username and password", Toast.LENGTH_SHORT).show();
+            } else if (password.length() < 6) {
+                Toast.makeText(getApplicationContext(), "Password must be at least 6 characters!", Toast.LENGTH_SHORT).show();
+            } else {
+                registerUser(username, password);
             }
         });
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String username = txtUsername.getText().toString().trim();
-                String password = txtPassword.getText().toString().trim();
+        btnLogin.setOnClickListener(v -> {
+            String username = txtUsername.getText().toString().trim();
+            String password = txtPassword.getText().toString().trim();
 
-                if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
-                    Toast.makeText(getApplicationContext(), "Input username and password", Toast.LENGTH_SHORT).show();
-                } else {
-                    loginUser(username, password);
-                }
+            if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
+                Toast.makeText(getApplicationContext(), "Input username and password", Toast.LENGTH_SHORT).show();
+            } else {
+                loginUser(username, password);
             }
         });
     }
 
     private void registerUser(String username, String password) {
-        auth.createUserWithEmailAndPassword(username, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Registration Succeeded", Toast.LENGTH_SHORT).show();
-                } else {
-                    String errorMessage = task.getException() != null ? task.getException().getMessage() : "Failed";
-                    Toast.makeText(getApplicationContext(), "Registration Failed: " + errorMessage, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        auth.createUserWithEmailAndPassword(username, password)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getApplicationContext(), "Registration Succeeded", Toast.LENGTH_SHORT).show();
+                    } else {
+                        String errorMessage = task.getException() != null ? task.getException().getMessage() : "Failed";
+                        Toast.makeText(getApplicationContext(), "Registration Failed: " + errorMessage, Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     private void loginUser(String username, String password) {
-        auth.signInWithEmailAndPassword(username, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Login Succeeded", Toast.LENGTH_SHORT).show();
-                } else {
-                    String errorMessage = task.getException() != null ? task.getException().getMessage() : "Failed";
-                    Toast.makeText(getApplicationContext(), "Login Failed: " + errorMessage, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        auth.signInWithEmailAndPassword(username, password)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getApplicationContext(), "Login Succeeded", Toast.LENGTH_SHORT).show();
+                    } else {
+                        String errorMessage = task.getException() != null ? task.getException().getMessage() : "Failed";
+                        Toast.makeText(getApplicationContext(), "Login Failed: " + errorMessage, Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 }
